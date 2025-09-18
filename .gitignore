@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Virtual env
+.venv/
+venv/
+env/
+ENV/
+
+# Pytest / reports
+.cache/
+.pytest_cache/
+report*.html
+*.xml
+*.junit.xml
+
+# Playwright artifacts
+playwright-report/
+test-results/
+blob-report/
+trace.zip
+
+# Env & secrets
+.env
+.env.*
+
+# Editors / OS
+.vscode/
+.idea/
+*.code-workspace
+.DS_Store
+Thumbs.db

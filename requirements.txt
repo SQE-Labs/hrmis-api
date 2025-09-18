@@ -1,0 +1,4 @@
+playwright==1.* 
+pytest==8.*
+pytest-html==4.*
+pytest-dotenv==0.5.*
