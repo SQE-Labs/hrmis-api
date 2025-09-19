@@ -82,9 +82,18 @@ Setup
 
 bash
 
-`# Create and activate virtual environment  # Windows  python -m venv .venv && .venv\Scripts\activate
-# macOS/Linux  python -m venv .venv &&  source .venv/bin/activate
-# Install dependencies  pip install -r requirements.txt `
+`
+# Create and activate virtual environment
+  
+# Windows  
+python -m venv .venv && .venv\Scripts\activate
+# macOS/Linux  
+python -m venv .venv &&  source .venv/bin/activate
+# Install dependencies  
+pip install -r requirements.txt 
+
+`
+
 
 Environment configuration
 -------------------------
@@ -157,46 +166,71 @@ Quick starts
 ------------
 
 bash
+`
+# Full suite (default role: superadmin)  
+pytest
 
-`# Full suite (default role: superadmin)  pytest
+# Fast CI gate (smokes + contracts)  
+pytest -m "smoke or contract" -q `
 
-# Fast CI gate (smokes + contracts)  pytest -m "smoke or contract" -q `
 
 Module runs
 -----------
 
 bash
 
-`# Documents  pytest -m module_documents
+`
+# Documents  
+pytest -m module_documents
 
-# Assets  pytest -m module_assets
+# Assets  
+pytest -m module_assets
 
-# Announcements  pytest -m module_announcements
+# Announcements  
+pytest -m module_announcements
 
-# Dashboard  pytest -m module_dashboard`
+# Dashboard  
+pytest -m module_dashboard
+
+`
 
 Positive vs negative vs contracts
 ---------------------------------
 
 bash
 
-`# Documents positives only  pytest -m "module_documents and not negative and not contract"
-# Documents contracts only  pytest -m "module_documents and contract"
-# Documents smoke only  pytest -m "module_documents and smoke"
-# Assets negatives only  pytest -m "module_assets and negative"
-# Only negatives folder  pytest tests/negative -q`
+`
+# Documents positives only  
+pytest -m "module_documents and not negative and not contract"
+# Documents contracts only  
+pytest -m "module_documents and contract"
+# Documents smoke only  
+pytest -m "module_documents and smoke"
+# Assets negatives only  
+pytest -m "module_assets and negative"
+# Only negatives folder  
+pytest tests/negative -q
+
+`
 
 Role overrides
 --------------
 
 bash
 
-`# Global role switch to HR  pytest --role hr -m module_documents
+`
+# Global role switch to HR  
+pytest --role hr -m module_documents
 
-# Assets smoke as L1  pytest --role l1 -m "module_assets and smoke"
-# Entire run as EMPLOYEE  pytest --role employee
+# Assets smoke as L1  
+pytest --role l1 -m "module_assets and smoke"
+# Entire run as EMPLOYEE  
+pytest --role employee
 
-# CI default role via env  DEFAULT_ROLE=hr pytest -m module_documents `
+# CI default role via env  DEFAULT_ROLE=hr 
+pytest -m module_documents 
+
+`
 
 Per‑test override:
 
@@ -207,38 +241,60 @@ Reports and logging
 
 bash
 
-`# HTML report (contracts)  pytest -m contract --html=report_contract.html --self-contained-html
-# JUnit XML for CI  pytest -m "smoke or contract" --junitxml=reports/junit.xml
-# Verbose output  pytest -vv
+`
+# HTML report (contracts)  
+pytest -m contract --html=report_contract.html --self-contained-html
+# JUnit XML for CI  
+pytest -m "smoke or contract" --junitxml=reports/junit.xml
+# Verbose output  
+pytest -vv
+# Show slow tests  
+pytest --durations=10 --durations-min=1.0  
 
-# Show slow tests  pytest --durations=10 --durations-min=1.0  `
+`
 
 Speed and failure control
 -------------------------
 
 bash
 
-`# Parallel (requires pytest-xdist)  pytest -m module_documents -n auto
+`
+# Parallel (requires pytest-xdist)  
+pytest -m module_documents -n auto
 
-# Stop on first failure  pytest -m module_documents -x
+# Stop on first failure  
+pytest -m module_documents -x
 
-# Failures first on re-run  pytest --ff
+# Failures first on re-run  
+pytest --ff
 
-# Only last failed  pytest --last-failed`
+# Only last failed  
+pytest --last-failed
+
+`
 
 Targeted runs
 -------------
 
 bash
 
-`# Single file  pytest tests/contracts/test_documents_contract.py
+`
+# Single file  
+pytest tests/contracts/test_documents_contract.py
 
-# Single test  pytest tests/contracts/test_documents_contract.py::test_documents_status_list_contract -q
+# Single test  
+pytest tests/contracts/test_documents_contract.py::test_documents_status_list_contract -q
 
-# Keyword filter  pytest -m module_documents -k "status_list"
-# Collect only (no execution)  pytest -m module_assets --collect-only
+# Keyword filter  
+pytest -m module_documents -k "status_list"
 
-# List available markers  pytest --markers`
+# Collect only (no execution)  
+pytest -m module_assets --collect-only
+
+# List available markers  
+pytest --markers
+
+`
 
 Superadmin‑first workflow
 -------------------------
