@@ -14,7 +14,7 @@ def pytest_addoption(parser):
         "--role",
         action="store",
         default=os.getenv("DEFAULT_ROLE", "superadmin"),
-        help="Default role to run tests under (superadmin, hr, employee, l1, l2, store)",
+        help="Default role to run tests under (superadmin, hr, employee, l1, l2, l3, store)",
     )
 
 @pytest.fixture(scope="session")
@@ -139,6 +139,12 @@ def api_l2(playwright: Playwright, base_url: str) -> Generator[APIRequestContext
     ctx.dispose()
 
 @pytest.fixture(scope="session")
+def api_l3(playwright: Playwright, base_url: str) -> Generator[APIRequestContext, None, None]:
+    ctx = _auth_ctx(playwright, base_url, "ASSET_L3_USER", "ASSET_L3_PASS")
+    yield ctx
+    ctx.dispose()
+
+@pytest.fixture(scope="session")
 def api_store(playwright: Playwright, base_url: str) -> Generator[APIRequestContext, None, None]:
     ctx = _auth_ctx(playwright, base_url, "ASSET_STORE_USER", "ASSET_STORE_PASS")
     yield ctx
@@ -190,4 +196,5 @@ def identity_employee(api_employee: APIRequestContext) -> Dict[str, Union[str, i
             code = first.get("employeeCode") or first.get("empCode")
             return {"employeeCode": code, "employeeId": emp_id, "employeeName": name, "source": "inferred"}
 
-    return {"employeeCode": None, "employeeId": None, "source": "unknown"}
+    return {"employeeCode": None, "employ"
+    "eeId": None, "source": "unknown"}

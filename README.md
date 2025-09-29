@@ -269,7 +269,7 @@ pytest --markers
 
 **Schemas:**
 - Contract tests validate response envelopes and stable fields to catch breaking changes early.
-- If the editor flags Draft 2020-12 meta-schema keywords, switch `$schema` to `draft-07` to silence the warning without changing runtime behavior.
+
 
 ---
 
