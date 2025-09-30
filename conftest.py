@@ -196,5 +196,4 @@ def identity_employee(api_employee: APIRequestContext) -> Dict[str, Union[str, i
             code = first.get("employeeCode") or first.get("empCode")
             return {"employeeCode": code, "employeeId": emp_id, "employeeName": name, "source": "inferred"}
 
-    return {"employeeCode": None, "employ"
-    "eeId": None, "source": "unknown"}
+    return {"employeeCode": None, "employeeId": None, "source": "unknown"}

@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schemas.company.internal/onboarding/invitations_list.schema.json",
+  "title": "Onboarding - Invitations List (pending)",
+  "description": "Supports nested pagination envelope observed in /onboarding/invitations.",
+  "type": "object",
+  "required": ["data"],
+  "additionalProperties": true,
+  "properties": {
+    "data": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": { "$ref": "#/$defs/invitation" }
+        },
+        {
+          "type": "object",
+          "required": ["data"],
+          "additionalProperties": true,
+          "properties": {
+            "data": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/invitation" }
+            },
+            "totalPages": { "type": ["integer", "number"], "minimum": 0 },
+            "totalElements": { "type": ["integer", "number"], "minimum": 0 }
+          }
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "invitation": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": ["integer", "number"] },
+        "token": { "type": "string" },
+        "activeStatus": { "type": "boolean" },
+        "email": { "type": "string" },
+        "url": { "type": "string" },
+        "createdOn": { "type": "string" },
+        "expiredOn": { "type": "string" },
+        "name": { "type": "string" },
+        "status": { "type": "string" },
+        "filledOn": { "type": ["string", "null"] }
+      }
+    }
+  }
+}
