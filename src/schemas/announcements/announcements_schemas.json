@@ -1,0 +1,77 @@
+{
+  "announcement_list_response_schema": {
+    "type": "object",
+    "properties": {
+      "data": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "integer" },
+                "title": { "type": ["string", "null"] },
+                "description": { "type": ["string", "null"] },
+                "eventType": { "type": ["string", "null"] },
+                "createdOn": { "type": ["string", "null"] },
+                "presentedBy": { "type": ["string", "null"] },
+                "startDateTime": { "type": ["string", "null"] },
+                "endDateTime": { "type": ["string", "null"] },
+                "duration": { "type": ["integer", "null"] },
+                "venue": { "type": ["string", "null"] },
+                "mode": { "type": ["string", "null"] },
+                "status": { "type": ["string", "null"] },
+                "createdBy": { "type": ["integer", "null"] },
+                "updatedBy": { "type": ["integer", "null"] },
+                "attachment": { "type": ["string", "null"] },
+                "updatedOn": { "type": ["string", "null"] }
+              },
+              "required": ["id"]
+            }
+          },
+          "totalPages": { "type": "integer" },
+          "totalPolicy": { "type": "integer" },
+          "message": { "type": "string" }
+        }
+      },
+      "message": { "type": "string" }
+    },
+    "required": ["data"]
+  },
+  "announcement_action_response_schema": {
+    "type": "object",
+    "properties": {
+      "data": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer" }
+                  }
+                }
+              },
+              "message": { "type": "string" }
+            }
+          },
+          "message": { "type": "string" }
+        }
+      },
+      "message": { "type": "string" }
+    },
+    "required": ["data", "message"]
+  },
+  "announcement_delete_response_schema": {
+    "type": "object",
+    "properties": {
+      "message": { "type": "string" }
+    },
+    "required": ["message"]
+  }
+}
