@@ -28,7 +28,7 @@ class BaseClient:
         return self._assert_status(r, expected)
 
     def post(self, path: str, expected: Iterable[int] | None = (200, 201), **kwargs: Dict[str, Any]) -> APIResponse:
-        """POST base+path with passthrough kwargs; default expected to 200/201."""
+        """POST base+path with passthro ugh kwargs; default expected to 200/201."""
         r = self.ctx.post(self.base + path, **kwargs)
         return self._assert_status(r, expected)
 

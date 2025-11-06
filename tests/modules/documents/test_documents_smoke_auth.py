@@ -1,4 +1,4 @@
-# tests/modules/test_documents_smoke_auth.py
+  # tests/modules/test_documents_smoke_auth.py
 import os
 import pytest
 from src.endpoints.documents import DOC_STATUS_LIST

@@ -71,7 +71,8 @@ python -m venv .venv && .venv\Scripts\activate
 # macOS/Linux
 python -m venv .venv && source .venv/bin/activate
 
-# Install dependencies
+# Install dependenciespytest tests/modules/salary/test_salary_upload.py --role=hr
+
 pip install -r requirements.txt
 ```
 
@@ -150,6 +151,9 @@ pytest -m module_announcements
 
 # Dashboard
 pytest -m module_dashboard
+
+# Salary Management
+pytest -m module_module_salaryManagement
 ```
 
 ---

@@ -96,16 +96,21 @@ def _signin(ctx: APIRequestContext, login_path: str, email: Optional[str], passw
 
 def _auth_ctx(playwright: Playwright, base_url: str, email_env: str, pass_env: str) -> APIRequestContext:
     timeout_ms = int(os.getenv("API_TIMEOUT_MS", "30000"))
-    bootstrap = playwright.request.new_context(base_url=base_url, timeout=timeout_ms)
+    # IMPORTANT: ignore HTTPS errors for the signin bootstrap to avoid SSL verification failures
+    bootstrap = playwright.request.new_context(
+        base_url=base_url,
+        timeout=timeout_ms,
+        ignore_https_errors=True
+    )
     login_path = _p("api/auth/signin")
     token = _signin(bootstrap, login_path, os.getenv(email_env), os.getenv(pass_env))
     bootstrap.dispose()
     return playwright.request.new_context(
         base_url=base_url,
         timeout=timeout_ms,
-        extra_http_headers={"Authorization": f"Bearer {token}"}
+        extra_http_headers={"Authorization": f"Bearer {token}"},
+        ignore_https_errors=True  # ensure all subsequent calls also ignore SSL verification issues
     )
-
 # ---------- Role-scoped APIRequestContext fixtures ----------
 
 @pytest.fixture(scope="session")

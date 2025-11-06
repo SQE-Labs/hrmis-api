@@ -23,3 +23,4 @@ def test_announcements_dashboard_list(ctx):
         pytest.xfail("Known backend behavior: 500 returned when no announcements exist")
     else:
         pytest.fail(f"Unexpected status {resp.status}: {resp.text()}")
+    
