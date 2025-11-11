@@ -96,28 +96,23 @@ def _signin(ctx: APIRequestContext, login_path: str, email: Optional[str], passw
 
 def _auth_ctx(playwright: Playwright, base_url: str, email_env: str, pass_env: str) -> APIRequestContext:
     timeout_ms = int(os.getenv("API_TIMEOUT_MS", "30000"))
-    # IMPORTANT: ignore HTTPS errors for the signin bootstrap to avoid SSL verification failures
+    # 👇 Add ignore_https_errors=True to bootstrap context
     bootstrap = playwright.request.new_context(
         base_url=base_url,
         timeout=timeout_ms,
-        ignore_https_errors=True
+        ignore_https_errors=True  # Allow login on self-signed HTTPS
     )
     login_path = _p("api/auth/signin")
     token = _signin(bootstrap, login_path, os.getenv(email_env), os.getenv(pass_env))
     bootstrap.dispose()
+
+    # 👇 Add ignore_https_errors=True again to the authenticated context
     return playwright.request.new_context(
         base_url=base_url,
         timeout=timeout_ms,
-        extra_http_headers={"Authorization": f"Bearer {token}"},
-        ignore_https_errors=True  # ensure all subsequent calls also ignore SSL verification issues
+        ignore_https_errors=True,
+        extra_http_headers={"Authorization": f"Bearer {token}"}
     )
-# ---------- Role-scoped APIRequestContext fixtures ----------
-
-@pytest.fixture(scope="session")
-def api_hr(playwright: Playwright, base_url: str) -> Generator[APIRequestContext, None, None]:
-    ctx = _auth_ctx(playwright, base_url, "HR_USER", "HR_PASS")
-    yield ctx
-    ctx.dispose()
 
 @pytest.fixture(scope="session")
 def api_employee(playwright: Playwright, base_url: str) -> Generator[APIRequestContext, None, None]:

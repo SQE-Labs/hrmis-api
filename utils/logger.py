@@ -2,73 +2,89 @@ import logging
 import os
 from datetime import datetime
 
-def get_logger(name: str = "APIFramework"):
+
+def get_logger(name: str = "APIFramework") -> logging.Logger:
     """
     Returns a logger instance that logs to both console and file.
     Designed for detailed API test logging.
     """
 
-    # Logs directory
+    # Create logs directory
     log_dir = os.path.join(os.path.dirname(__file__), "..", "logs")
     os.makedirs(log_dir, exist_ok=True)
 
-    # File name with timestamp
-    log_file = os.path.join(log_dir, f"api_tests_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
+    # Timestamped log file (one per test run)
+    log_file = os.path.join(
+        log_dir, f"api_tests_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+    )
 
-    # Create logger
+    # Create or get logger
     logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)  # Capture everything
+    logger.setLevel(logging.DEBUG)
 
-    # Avoid duplicate handlers if logger already exists
-    if not logger.handlers:
-        # Console handler (info & above)
-        console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.INFO)
+    # Avoid duplicate handlers (pytest reruns)
+    if logger.handlers:
+        return logger
 
-        # File handler (all logs)
-        file_handler = logging.FileHandler(log_file, encoding="utf-8")
-        file_handler.setLevel(logging.DEBUG)
+    # --- Console Handler ---
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+    console_formatter = logging.Formatter(
+        "[%(levelname)s] %(message)s"
+    )
+    console_handler.setFormatter(console_formatter)
 
-        # Formatter
-        formatter = logging.Formatter(
-            "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s",
-            datefmt="%Y-%m-%d %H:%M:%S",
-        )
+    # --- File Handler ---
+    file_handler = logging.FileHandler(log_file, encoding="utf-8")
+    file_handler.setLevel(logging.DEBUG)
+    file_formatter = logging.Formatter(
+        "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+    file_handler.setFormatter(file_formatter)
 
-        console_handler.setFormatter(formatter)
-        file_handler.setFormatter(formatter)
+    # Attach handlers
+    logger.addHandler(console_handler)
+    logger.addHandler(file_handler)
 
-        logger.addHandler(console_handler)
-        logger.addHandler(file_handler)
-
+    logger.info(f"🗂️ Log file created at: {log_file}")
     return logger
 
 
-# Default logger instance
+# Create a default logger instance
 logger = get_logger()
 
 
-def log_request(method, url, headers=None, body=None):
-    """Logs API request details."""
-    logger.info(f"➡️ REQUEST: {method} {url}")
+def log_request(method: str, url: str, headers=None, body=None):
+    """Logs detailed API request information."""
+    logger.info(f"➡️ REQUEST: {method.upper()} {url}")
+
     if headers:
         logger.debug(f"Headers: {headers}")
+
     if body:
-        logger.debug(f"Body: {body}")
+        if isinstance(body, (dict, list)):
+            logger.debug(f"Body (JSON): {body}")
+        else:
+            logger.debug(f"Body (Raw): {body}")
 
 
 def log_response(response):
-    """Logs API response details."""
+    """Logs detailed API response information."""
     try:
-        status = response.status_code
-        logger.info(f"⬅️ RESPONSE [{status}]: {response.url}")
+        logger.info(f"⬅️ RESPONSE [{response.status_code}] from {response.url}")
+
+        # Headers
         logger.debug(f"Response Headers: {dict(response.headers)}")
 
-        # Try to log JSON or fallback to text
+        # Try JSON, else fallback to text
         try:
-            logger.debug(f"Response Body: {response.json()}")
-        except Exception:
-            logger.debug(f"Response Body: {response.text}")
+            json_body = response.json()
+            logger.debug(f"Response JSON: {json_body}")
+        except ValueError:
+            text_body = response.text.strip()
+            logger.debug(f"Response Text: {text_body if text_body else '[empty response]'}")
 
     except Exception as e:
         logger.error(f"⚠️ Failed to log response: {e}")
+   

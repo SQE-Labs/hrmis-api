@@ -15,3 +15,5 @@ def test_documents_status_list_contract(ctx):
     assert r.ok, r.text()
     body = r.json()
     jsonschema.validate(instance=body, schema=schema)
+
+
