@@ -1,0 +1,65 @@
+{
+  "title": "AttendanceData",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "description": "Day and date of the record, e.g., 'Thu, Oct 30'"
+          },
+          "punch_in_time": {
+            "type": ["string", "null"],
+            "description": "Time when the user punched in, or 'NA' if absent"
+          },
+          "punch_in_out": {
+            "type": ["string", "null"],
+            "description": "Time when the user punched out, or 'NA' if absent"
+          },
+          "total_hour": {
+            "type": "string",
+            "pattern": "^(\\d{1,2}:\\d{2}|0)$",
+            "description": "Total hours worked in HH:MM format or '0' if none"
+          },
+          "is_positive_hour": {
+            "type": "boolean",
+            "description": "Indicates whether total hours meet the positive threshold"
+          },
+          "leave_type": {
+            "type": ["string", "null"],
+            "description": "Type of leave if applicable, otherwise null"
+          },
+          "punch_in_time_org": {
+            "type": ["string", "null"],
+            "description": "Original punch-in time before modification, if any"
+          },
+          "punch_in_out_org": {
+            "type": ["string", "null"],
+            "description": "Original punch-out time before modification, if any"
+          },
+          "is_compiled": {
+            "type": "boolean",
+            "description": "Whether the record is finalized/compiled"
+          }
+        },
+        "required": [
+          "date",
+          "punch_in_time",
+          "punch_in_out",
+          "total_hour",
+          "is_positive_hour",
+          "leave_type",
+          "punch_in_time_org",
+          "punch_in_out_org",
+          "is_compiled"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["data"],
+  "additionalProperties": false
+}

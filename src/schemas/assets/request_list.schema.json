@@ -1,0 +1,5 @@
+{
+  "description": "Permissive early-stage schema to catch envelope breaks without overfitting fields.",
+  "type": ["array", "object"],
+  "additionalProperties": true
+}
