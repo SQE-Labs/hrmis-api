@@ -1,6 +1,7 @@
 # tests/modules/test_announcements_smoke.py
 import os
 import pytest
+from src.endpoints.announcements import ANNOUNCEMENTS_DASHBOARD_LIST
 
 def _p(path: str) -> str:
     """Prefix helper: BASE_URL is the host, API_PREFIX is the app path."""
@@ -8,10 +9,10 @@ def _p(path: str) -> str:
     return f"/{prefix}/{path.lstrip('/')}"
 
 @pytest.mark.smoke
-@pytest.mark.module("announcements")
-@pytest.mark.role_hr
-def test_announcements_dashboard_list_as_hr(api_hr):
-    resp = api_hr.get(_p("announcement/dashboard/list"))
+@pytest.mark.regression
+@pytest.mark.module_announcements
+def test_announcements_dashboard_list(ctx):
+    resp = ctx.get(_p(ANNOUNCEMENTS_DASHBOARD_LIST))
     # Treat environment-driven empty state as non-failure for smoke, but document the case
     if resp.status == 200:
         data = resp.json()

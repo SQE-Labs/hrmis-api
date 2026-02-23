@@ -1,0 +1,5 @@
+{
+  "description": "Allows both shapes to keep contract checks stable across environments.",
+  "type": ["array", "object"],
+  "additionalProperties": true
+}

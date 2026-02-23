@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schemas.company.internal/onboarding/departments_list.schema.json",
+  "title": "Onboarding - Departments List",
+  "description": "Allows list or wrapped list envelopes for /onboarding/departmentlist.",
+  "type": ["array", "object"],
+  "oneOf": [
+    {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    {
+      "type": "object",
+      "required": ["data"],
+      "additionalProperties": true,
+      "properties": {
+        "data": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": { "type": "object", "additionalProperties": true }
+            },
+            {
+              "type": "object",
+              "required": ["data"],
+              "additionalProperties": true,
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": { "type": "object", "additionalProperties": true }
+                },
+                "totalPages": { "type": ["integer", "number"] },
+                "totalElements": { "type": ["integer", "number"] }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
