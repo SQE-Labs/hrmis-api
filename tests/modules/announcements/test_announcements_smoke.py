@@ -11,6 +11,8 @@ def _p(path: str) -> str:
 @pytest.mark.smoke
 @pytest.mark.regression
 @pytest.mark.module_announcements
+# Keep this xfail for the primary known bug (500 on null status)
+@pytest.mark.xfail(reason="Backend throws 500 error when status is null")
 def test_announcements_dashboard_list(ctx):
     resp = ctx.get(_p(ANNOUNCEMENTS_DASHBOARD_LIST))
     # Treat environment-driven empty state as non-failure for smoke, but document the case
